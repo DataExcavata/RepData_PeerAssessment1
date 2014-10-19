@@ -44,23 +44,7 @@ medianStepsDay <- median(totalStepsDate$steps)
 ```
 
 
-The Mean steps is 
-
-```
-
-Error in eval(expr, envir, enclos) : object 'meanByDay' not found
-
-```
-
-. The Median steps is 
-
-```
-
-Error in eval(expr, envir, enclos) : object 'medianByDay' not found
-
-```
-
-.
+The Mean steps is 1.0766 &times; 10<sup>4</sup>. The Median steps is 10765.
 
 ## What is the average daily activity pattern?
 ### 1. A time series plot demonstrating a 5 minute interval of the average steps taken across all days.  
@@ -126,16 +110,7 @@ medianStepsDayComplete <- median(totalStepsDateComplete$steps)
 ```
 
 
-The Mean value remains 
-
-```
-
-Error in eval(expr, envir, enclos) : 
-  object 'meansStepsDayComplete' not found
-
-```
-
- due to the strategy of using mean values for replacement.
+The Mean value remains 1.0766 &times; 10<sup>4</sup> due to the strategy of using mean values for replacement.
 The Median value has become 1.0766 &times; 10<sup>4</sup> due to the mean value inserted as an actual value.
 
 ## Are there differences in activity patterns between weekdays and weekends?
@@ -150,8 +125,7 @@ activityDataCompleteDay$day <- ifelse(activityDataCompleteDay$day, "weekend",
 ```
 
 
-### 2. Performs preprocessing of data to cacluate averages by interval and by weekday or weekend.
-### The resulting panel plot demonstrates 5 minute intervals of the average total steps across all weekdays and weekends
+### 2. Performs preprocessing of data to cacluate averages by interval and by weekday or weekend. The resulting panel plot demonstrates 5 minute intervals of the average total steps across all weekdays and weekends
 
 ```r
 avgStepsIntervalDay <- aggregate(steps ~ interval + day, activityDataCompleteDay, 
@@ -164,4 +138,4 @@ xyplot(steps ~ interval | factor(day), data = avgStepsIntervalDay, xlab = "Inter
 ![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12.png) 
 
 
-The resulting plot indicates late morning activity is highest on the weekdays.  However, overall activity remains higher throught the entire day on the weekends.
+The plot indicates late morning activity is highest on the weekdays.  However, overall activity remains higher throught the entire day on the weekends.
