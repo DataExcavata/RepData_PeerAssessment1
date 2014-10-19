@@ -1,0 +1,167 @@
+# Reproducible Research 
+## Peer Assessment 1
+
+### Libraries needed for this asignment.
+
+```r
+library(lattice)
+```
+
+
+## Loading and preprocessing the data
+### 1. Loads activity data for analysis.
+
+```r
+activityData <- read.csv("activity.csv", stringsAsFactors = FALSE)
+```
+
+
+### 2. Performs pre-processing of activity data for usability in the subsequent analysis.
+
+```r
+totalStepsDate <- aggregate(steps ~ date, activityData, sum, na.rm = TRUE)
+avgStepsInterval <- aggregate(steps ~ interval, activityData, mean, na.rm = TRUE)
+maxStepsCount <- which.max(avgStepsInterval$steps)
+```
+
+
+## What is mean total number of steps taken per day?
+### 1. A histogram of the total number of steps taken each day.
+
+```r
+hist(totalStepsDate$steps, col = "blue", main = "Total Number Steps Per Day", 
+    xlab = "Steps Per Day")
+```
+
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
+
+
+### 2. Calculates and reports the mean and median step counts.
+
+```r
+meanStepsDay <- mean(totalStepsDate$steps)
+medianStepsDay <- median(totalStepsDate$steps)
+```
+
+
+The Mean steps is 
+
+```
+
+Error in eval(expr, envir, enclos) : object 'meanByDay' not found
+
+```
+
+. The Median steps is 
+
+```
+
+Error in eval(expr, envir, enclos) : object 'medianByDay' not found
+
+```
+
+.
+
+## What is the average daily activity pattern?
+### 1. A time series plot demonstrating a 5 minute interval of the average steps taken across all days.  
+
+```r
+plot(avgStepsInterval$interval, avgStepsInterval$steps, type = "l", frame = FALSE, 
+    col = "blue", main = "Average Activity Per Day", xlab = "Interval (5 Minutes)", 
+    ylab = "Average Number Steps")
+```
+
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
+
+
+### 2. The interval, on average across all days, with the maximum number of steps.
+
+```r
+maxStepsInterval <- avgStepsInterval[maxStepsCount, ]$interval
+```
+
+
+Interval 835 has the most steps.
+
+## Imputing missing values
+### 1. Calculates and reports the number of missing values in the dataset
+
+```r
+missingValuesTotal <- sum(is.na(activityData$steps))
+```
+
+
+A total of 2304 missing values exist in the dataset.
+
+### 2. & 3. The strategy for filling in missing values in the dataset.  Loop through a copy of the dataset looking for missing step values.  When found, replace the missing step value with the average number of steps for the matching interval.
+
+```r
+activityDataComplete <- activityData
+activityCount = 0
+for (i in 1:nrow(activityDataComplete)) {
+    if (is.na(activityDataComplete[i, ]$steps)) {
+        activityDataComplete[i, ]$steps <- avgStepsInterval[avgStepsInterval$interval == 
+            activityDataComplete[i, ]$interval, ]$steps
+        activityCount <- activityCount + 1
+    }
+}
+```
+
+
+### 4. The same histogram as above, this time using the complete dataset.  
+
+```r
+totalStepsDateComplete <- aggregate(steps ~ date, data = activityDataComplete, 
+    sum)
+hist(totalStepsDateComplete$steps, col = "green", main = "Total Number Steps Per Day (No Missing Values)", 
+    xlab = "Steps Per Day")
+```
+
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10.png) 
+
+```r
+
+meanStepsDayComplete <- mean(totalStepsDateComplete$steps)
+medianStepsDayComplete <- median(totalStepsDateComplete$steps)
+```
+
+
+The Mean value remains 
+
+```
+
+Error in eval(expr, envir, enclos) : 
+  object 'meansStepsDayComplete' not found
+
+```
+
+ due to the strategy of using mean values for replacement.
+The Median value has become 1.0766 &times; 10<sup>4</sup> due to the mean value inserted as an actual value.
+
+## Are there differences in activity patterns between weekdays and weekends?
+### 1. A new factor column indicating whether a given date is a "weekday" or a "weekend".
+
+```r
+activityDataCompleteDay <- activityDataComplete
+activityDataCompleteDay$day <- weekdays(as.Date(activityDataCompleteDay$date)) %in% 
+    c("Saturday", "Sunday")
+activityDataCompleteDay$day <- ifelse(activityDataCompleteDay$day, "weekend", 
+    "weekday")
+```
+
+
+### 2. Performs preprocessing of data to cacluate averages by interval and by weekday or weekend.
+### The resulting panel plot demonstrates 5 minute intervals of the average total steps across all weekdays and weekends
+
+```r
+avgStepsIntervalDay <- aggregate(steps ~ interval + day, activityDataCompleteDay, 
+    mean)
+xyplot(steps ~ interval | factor(day), data = avgStepsIntervalDay, xlab = "Intervals (5 Minutes)", 
+    ylab = "Average Steps Across Weekday/Weekend", main = "Differences in Activity Patterns Between Weekdays and Weekends", 
+    type = "l")
+```
+
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12.png) 
+
+
+The resulting plot indicates late morning activity is highest on the weekdays.  However, overall activity remains higher throught the entire day on the weekends.
