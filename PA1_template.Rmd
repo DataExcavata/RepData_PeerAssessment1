@@ -58,8 +58,7 @@ missingValuesTotal <- sum(is.na(activityData$steps))
 
 A total of `r missingValuesTotal` missing values exist in the dataset.
 
-### 2. & 3. The strategy for filling in missing values in the dataset.  Loop through a copy of the dataset
-### looking for missing step values.  When found, replace the missing step value with the average number of steps for the matching interval.
+### 2. & 3. The strategy for filling in missing values in the dataset.  Loop through a copy of the dataset looking for missing step values.  When found, replace the missing step value with the average number of steps for the matching interval.
 ```{r}
 activityDataComplete <- activityData
 activityCount = 0
