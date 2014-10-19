@@ -34,7 +34,7 @@ medianStepsDay <- median(totalStepsDate$steps)
 
 The Mean steps is `r meanByDay`. The Median steps is `r medianByDay`.
 
-##What is the average daily activity pattern?
+## What is the average daily activity pattern?
 ### 1. A time series plot demonstrating a 5 minute interval of the average steps taken across all days.  
 ```{r}
 plot(avgStepsInterval$interval, avgStepsInterval$steps,
@@ -59,8 +59,7 @@ missingValuesTotal <- sum(is.na(activityData$steps))
 A total of `r missingValuesTotal` missing values exist in the dataset.
 
 ### 2. & 3. The strategy for filling in missing values in the dataset.  Loop through a copy of the dataset
-### looking for missing step values.  When found, replace the missing step value with the average number of
-### steps for the matching interval.
+### looking for missing step values.  When found, replace the missing step value with the average number of steps for the matching interval.
 ```{r}
 activityDataComplete <- activityData
 activityCount = 0
@@ -95,7 +94,7 @@ activityDataCompleteDay$day <- ifelse(activityDataCompleteDay$day, "weekend", "w
 ```
 
 ### 2. Performs preprocessing of data to cacluate averages by interval and by weekday or weekend.
-### The resulting panel plot demonstrates 5 minute intervals of the average total steps across all weekdays ### and weekends
+### The resulting panel plot demonstrates 5 minute intervals of the average total steps across all weekdays and weekends
 ```{r}
 avgStepsIntervalDay <- aggregate(steps ~ interval + day, activityDataCompleteDay, mean)
 xyplot(steps ~ interval | factor(day), data = avgStepsIntervalDay, 
